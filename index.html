@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Canvas Drawing Pad</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="toolbar">
+    <label>
+        Tool:
+        <select id="toolSelect">
+            <option value="freehand">Freehand</option>
+            <option value="line">Line</option>
+            <option value="rect">Rectangle</option>
+            <option value="circle">Circle</option>
+        </select>
+    </label>
+
+    <label>
+        Preset Colors:
+        <div id="presetColors">
+            <span class="color-swatch" data-color="#000000" style="background:#000"></span>
+            <span class="color-swatch" data-color="#e74c3c" style="background:#e74c3c"></span>
+            <span class="color-swatch" data-color="#27ae60" style="background:#27ae60"></span>
+            <span class="color-swatch" data-color="#3498db" style="background:#3498db"></span>
+            <span class="color-swatch" data-color="#f1c40f" style="background:#f1c40f"></span>
+        </div>
+    </label>
+
+    <label>
+        Custom Color:
+        <input type="color" id="colorPicker" value="#000000" />
+    </label>
+
+    <label>
+        Brush size:
+        <input type="range" id="brushSize" min="1" max="50" value="5" />
+    </label>
+
+    <label>
+        Background:
+        <input type="file" id="bgImageInput" accept="image/*" />
+    </label>
+
+    <button id="undoBtn">Undo</button>
+    <button id="clearBtn">Clear</button>
+    <button id="saveBtn">Save</button>
+</div>
+
+<canvas id="drawCanvas"></canvas>
+<script src="script.js"></script>
+</body>
+</html>
