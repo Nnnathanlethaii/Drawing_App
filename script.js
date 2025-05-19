@@ -8,6 +8,8 @@ const saveBtn = document.getElementById('saveBtn');
 const undoBtn = document.getElementById('undoBtn');
 const bgImageInput = document.getElementById('bgImageInput');
 const presetColors = document.getElementById('presetColors');
+const addImageInput = document.getElementById('addImageInput');
+let imageToInsert = null;
 
 // undo stack
 const undoStack = [];
@@ -160,6 +162,31 @@ function drawShape(e) {
   }
   ctx.stroke();
 }
+
+addImageInput.addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    const img = new Image();
+    img.onload = () => {
+      imageToInsert = img;
+      alert('Image loaded! Click on the canvas to place it.');
+    };
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(file);
+});
+canvas.addEventListener('click', e => {
+  if (!imageToInsert) return;
+  const [x, y] = getXY(e);
+  saveState();
+  const scale = 0.5; // adjust scale if image is too large
+  ctx.drawImage(imageToInsert, x, y, imageToInsert.width * scale, imageToInsert.height * scale);
+  imageToInsert = null; // only insert once
+});
+
 
 // attach listeners
 canvas.addEventListener('mousedown', startDraw);
