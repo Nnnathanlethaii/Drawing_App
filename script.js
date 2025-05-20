@@ -9,6 +9,8 @@ const undoBtn = document.getElementById('undoBtn');
 const bgImageInput = document.getElementById('bgImageInput');
 const presetColors = document.getElementById('presetColors');
 const addImageInput = document.getElementById('addImageInput');
+const addImageInput   = document.getElementById('addImageInput');
+const imageScaleSelect = document.getElementById('imageScaleSelect');
 let imageToInsert = null;
 
 // undo stack
@@ -185,6 +187,11 @@ canvas.addEventListener('click', e => {
   const scale = 0.5; // adjust scale if image is too large
   ctx.drawImage(imageToInsert, x, y, imageToInsert.width * scale, imageToInsert.height * scale);
   imageToInsert = null; // only insert once
+  const scale = parseFloat(imageScaleSelect.value);
+    const w = imageToInsert.width * scale;
+    const h = imageToInsert.height * scale;
+    ctx.drawImage(imageToInsert, x, y, w, h);
+      imageToInsert = null;
 });
 
 
