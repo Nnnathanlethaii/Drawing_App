@@ -19,9 +19,10 @@ body {
   align-items: center;
   gap: 4px;
 }
-#presetColors {
-  display: flex;
+.preset-colors {
+  display: inline-flex;
   gap: 4px;
+  margin-left: 4px;
 }
 .color-swatch {
   width: 20px;
