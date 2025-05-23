@@ -12,6 +12,7 @@
         Tool:
         <select id="toolSelect">
             <option value="freehand">Freehand</option>
+            <option value="eraser">Eraser</option>
             <option value="line">Line</option>
             <option value="rect">Rectangle</option>
             <option value="circle">Circle</option>
@@ -20,7 +21,6 @@
 
     <label>
         Preset Colors:
-        <!-- Changed <div> to <span> -->
         <span id="presetColors" class="preset-colors">
         <span class="color-swatch" data-color="#000000" style="background:#000;"></span>
         <span class="color-swatch" data-color="#e74c3c" style="background:#e74c3c;"></span>
@@ -38,6 +38,12 @@
     <label>
         Brush size:
         <input type="range" id="brushSize" min="1" max="50" value="5" />
+    </label>
+
+    <!-- Added Eraser size control -->
+    <label>
+        Eraser size:
+        <input type="range" id="eraserSize" min="5" max="100" value="20" />
     </label>
 
     <label>

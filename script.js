@@ -1,15 +1,16 @@
-const canvas             = document.getElementById('drawCanvas');
-const ctx                = canvas.getContext('2d');
-const toolSelect         = document.getElementById('toolSelect');
-const colorPicker        = document.getElementById('colorPicker');
-const brushSize          = document.getElementById('brushSize');
-const clearBtn           = document.getElementById('clearBtn');
-const saveBtn            = document.getElementById('saveBtn');
-const undoBtn            = document.getElementById('undoBtn');
-const bgImageInput       = document.getElementById('bgImageInput');
-const presetColors       = document.getElementById('presetColors');
-const addImageInput      = document.getElementById('addImageInput');
-const imageScaleSelect   = document.getElementById('imageScaleSelect');
+const canvas           = document.getElementById('drawCanvas');
+const ctx              = canvas.getContext('2d');
+const toolSelect       = document.getElementById('toolSelect');
+const colorPicker      = document.getElementById('colorPicker');
+const brushSize        = document.getElementById('brushSize');
+const eraserSize       = document.getElementById('eraserSize');
+const clearBtn         = document.getElementById('clearBtn');
+const saveBtn          = document.getElementById('saveBtn');
+const undoBtn          = document.getElementById('undoBtn');
+const bgImageInput     = document.getElementById('bgImageInput');
+const presetColors     = document.getElementById('presetColors');
+const addImageInput    = document.getElementById('addImageInput');
+const imageScaleSelect = document.getElementById('imageScaleSelect');
 
 let imageToInsert = null;
 
@@ -118,25 +119,37 @@ function startDraw(e) {
 function stopDraw(e) {
   if (!drawing) return;
   drawing = false;
-  if (toolSelect.value !== 'freehand') {
+  if (toolSelect.value !== 'freehand' && toolSelect.value !== 'eraser') {
     drawShape(e);
   }
 }
 
 function draw(e) {
   if (!drawing) return;
-  const [x, y] = getXY(e);
-  ctx.strokeStyle = colorPicker.value;
-  ctx.lineWidth   = brushSize.value;
 
-  if (toolSelect.value === 'freehand') {
+  const [x, y] = getXY(e);
+
+  if (toolSelect.value === 'freehand' || toolSelect.value === 'eraser') {
     ctx.beginPath();
     ctx.moveTo(startX, startY);
     ctx.lineTo(x, y);
+
+    if (toolSelect.value === 'eraser') {
+      ctx.lineWidth = eraserSize.value;
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.strokeStyle = 'rgba(0,0,0,1)';
+    } else {
+      ctx.lineWidth = brushSize.value;
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.strokeStyle = colorPicker.value;
+    }
+
     ctx.stroke();
     [startX, startY] = [x, y];
+
   } else {
-    // preview shape
+    // shape preview
+    ctx.globalCompositeOperation = 'source-over';
     ctx.putImageData(savedImage, 0, 0);
     drawShape(e);
   }
@@ -145,6 +158,9 @@ function draw(e) {
 function drawShape(e) {
   const [x, y] = getXY(e);
   ctx.beginPath();
+  ctx.strokeStyle = colorPicker.value;
+  ctx.lineWidth   = brushSize.value;
+
   switch (toolSelect.value) {
     case 'line':
       ctx.moveTo(startX, startY);
@@ -184,6 +200,7 @@ canvas.addEventListener('click', e => {
   const scale = parseFloat(imageScaleSelect.value);
   const w     = imageToInsert.width * scale;
   const h     = imageToInsert.height * scale;
+  ctx.globalCompositeOperation = 'source-over';
   ctx.drawImage(imageToInsert, x, y, w, h);
   imageToInsert = null;
 });
